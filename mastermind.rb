@@ -10,10 +10,103 @@ Build a Mastermind game from the command line where you have 12 turns to guess t
 	
 =end
 
-class SuckMyBalls
 
-	def eatme
-		
-		
+
+class Game
+
+	attr_accessor :colors, :secret_code, :player
+
+	def initialize(player_name)
+		#array of possible colors
+		@colors = %w(red blue orange green yellow pink).to_a
+		#array of 5 random colors for secret code
+		@secret_code = create_secret_code
+		@player = Player.new(player_name)
+	
 	end
+
+	def create_secret_code
+
+		random_code = []
+		4.times do 
+			random_code << @colors[rand(6).to_i]
+		end
+		return random_code
+			
+	end
+
+	def get_guesses
+
+		@colors.each_with_index do |item, index|
+			print index.to_s + " - " + item + "\n"
+		end
+		puts "Enter 4 colors, by index:"
+		guesses = gets.chomp.scan(/\d/)
+
+		while guesses.length != 4 
+			
+			puts "\n"
+				@colors.each_with_index do |item, index|
+				print index.to_s + " - " + item + "\n"
+				end
+			puts "\n"
+			puts "That's not the right number of selections!"
+			puts "Enter 4 colors, by index:"
+			guesses = gets.chomp.scan(/\d/)
+		end
+
+		
+
+		return guesses
+	
+	end #get_guesses
+
+
+end #class Game
+
+
+class Player
+	attr_accessor :name, :guesses
+	def initialize(name)
+		@name = name
+		@guesses = [] 
+	end
+end #class Player
+
+
+
+
+def play_game
+
+	turn = 0
+
+	g = Game.new("Goe")
+	p g.colors
+	p g.secret_code
+	p g.player.name
+
+	while turn < 4 do
+
+	
+	g.player.guesses = g.get_guesses
+	p g.player.guesses
+
+	turn +=1
+	puts "turn : " + turn.to_s
+	
+	end
+
+
+	
+	
+
+	
 end
+
+play_game
+
+
+
+
+
+
